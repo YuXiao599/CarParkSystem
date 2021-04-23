@@ -1,0 +1,19 @@
+# 约定eureka服务器的外部端口号
+server:
+  port: 7001
+
+eureka:
+  instance:
+    # eureka主机名称
+    # hostname: localhost
+    hostname: eureka7001.com
+  client:
+    # 自己是否注册到eureka  false-不注册  true-注册
+    register-with-eureka: false
+    #  自己是否检索自己是否注册  false-不检索  true-检索
+    fetch-registry: false
+    # 约定eureka外部访问地址
+    service-url:
+      #单机
+      #defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://eureka7002.com:7002/eureka,http://eureka7003.com:7003/eureka

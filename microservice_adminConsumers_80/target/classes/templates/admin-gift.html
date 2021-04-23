@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>停车场管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!--    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />-->
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+    <script src="js/layui-2.5.4/layui.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+         <a href="/index">首页</a>
+        <a href="admin-gift">增值服务管理</a>
+        <a>
+          <cite>礼券活动管理</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so" onsubmit="return false">
+
+          <input type="text" name="search" id="search" placeholder="请输入礼券名" autocomplete="off" class="layui-input">
+          <button class="layui-btn" id="searchGift" lay-submit="" lay-filter="searchSubmit" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </form>
+      </div>
+
+      <xblock>
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" id="add-gift-btn"><i class="layui-icon"></i>添加</button>
+      </xblock>
+
+<!--      <div class="layui-main">-->
+
+      <table id="gift-tbl" lay-filter="gift-tbl" ></table>
+        <script type="text/html" id="gift-tbl-toolbar" style="color: #00F7DE">
+          <a title="编辑"  lay-event="updateGift">
+            <i class="layui-icon">&#xe642;</i>
+          </a>
+          <a title="删除"  lay-event="deleteGift">
+            <i class="layui-icon">&#xe640;</i>
+          </a>
+        </script>
+
+    </div>
+<!--      </div>-->
+
+
+<!--      <div class="page">-->
+<!--        <div>-->
+<!--          <a class="prev" href="">&lt;&lt;</a>-->
+<!--          <a class="num" href="">1</a>-->
+<!--          <span class="current">2</span>-->
+<!--          <a class="num" href="">3</a>-->
+<!--          <a class="num" href="">489</a>-->
+<!--          <a class="next" href="">&gt;&gt;</a>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      更新礼券信息-->
+      <div class="x-body" id="update-gift-layer" style="display: none; padding: 20px">
+        <form lay-filter="update-gift-form" class="layui-form layui-form-pane" id="update-gift-form">
+          <div class="layui-form-item" style="display: none;">
+            <label  class="layui-form-label">
+              <span class="x-red">*</span>礼券id
+            </label>
+            <div class="layui-input-inline">
+              <input type="text"  name="giftid" required=""
+                     autocomplete="off" class="layui-input" value="">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label  class="layui-form-label">
+              <span class="x-red">*</span>礼券名
+            </label>
+            <div class="layui-input-inline">
+              <input type="text"  name="giftname" required="" lay-verify="required"
+                     autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label  class="layui-form-label">
+              <span class="x-red">*</span>礼券数量
+            </label>
+            <div class="layui-input-inline">
+              <input type="text"  name="giftnumber" required="" lay-verify="required"
+                     autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label  class="layui-form-label">
+              <span class="x-red">*</span>所需兑换积分
+            </label>
+            <div class="layui-input-inline">
+              <input type="text"  name="giftscore" required="" lay-verify="required"
+                     autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item layui-form-text">
+            <label for="giftinformation" class="layui-form-label">
+              <span class="x-red">*</span>描述
+            </label>
+            <div class="layui-input-block">
+<!--              <textarea placeholder="请输入内容" id="giftinformation" name="giftinformation" class="layui-textarea"></textarea>-->
+              <input type="text" id="giftinformation" name="giftinformation" required="" lay-verify="required"
+                     autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button class="layui-btn" lay-submit lay-filter="update-gift-form-submit">提交</button>
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+<!--      添加礼券-->
+      <div class="x-body" id="add-gift-layer" style="display: none; padding: 20px">
+        <form lay-filter="add-gift-form" class="layui-form layui-form-pane" id="add-gift-form">
+
+          <div class="layui-form-item">
+            <label  class="layui-form-label">
+              <span class="x-red">*</span>礼券名称
+            </label>
+            <div class="layui-input-inline">
+              <input type="text"  name="giftname" required="" lay-verify="required"
+                     autocomplete="off" class="layui-input" >
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label  class="layui-form-label">
+              <span class="x-red">*</span>礼券数量
+            </label>
+            <div class="layui-input-inline">
+              <input type="text"  name="giftnumber" required="" lay-verify="required"
+                     autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label  class="layui-form-label">
+              <span class="x-red">*</span>所需兑换积分
+            </label>
+            <div class="layui-input-inline">
+              <input type="text"  name="giftscore" required="" lay-verify="required"
+                     autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item layui-form-text">
+            <label for="giftinformation" class="layui-form-label">
+              <span class="x-red">*</span>描述
+            </label>
+            <div class="layui-input-block">
+              <!-- <textarea placeholder="请输入内容" id="giftinformation" name="giftinformation" class="layui-textarea"></textarea>-->
+              <input type="text"  name="giftinformation" required="" lay-verify="required"
+                     autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button class="layui-btn" lay-submit lay-filter="add-gift-form-submit">提交</button>
+              <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <script>
+        layui.use(['jquery', 'table', 'layer', 'form'], function() {
+          var $ = layui.$;
+          var table = layui.table;
+          var layer = layui.layer;
+          var form = layui.form;
+
+          // 显示所有礼券
+          table.render({
+            elem: '#gift-tbl',
+            url: 'gift/all',
+            method: 'get'
+            ,page: true,
+            limits: [3, 5, 10] , //一页选择显示3,5或10条数据
+            limit: 5,  //一页显示10条数据
+            sort:true,
+            cols: [
+              [  {type: 'checkbox', fixed: 'left'},
+                {field: 'giftid', width:130,align:'center',title: '礼券id',unresize: true,sort:true},
+                {field: 'giftname',width:200, title: '礼券名称'},
+                {field: 'giftinformation',width:290, title: '礼券描述'},
+                {field: 'giftnumber', width:150,align:'center',title: '礼券数量',unresize: true,sort:true},
+                {field: 'giftscore', width:200,align:'center',title: '礼券所需积分',unresize: true,sort:true},
+                {toolbar: '#gift-tbl-toolbar',width:222,align:'center', title: '操作'}
+              ]
+            ],
+            // 表格容器id，用于表格重载
+            id: 'gift-tbl',
+            parseData:function(res){ //res 即为原始返回的数据
+            console.log(res);
+            var current_pages;
+            //第一次显示的时候this.page=true，把这种情况单独列出
+            if(this.page===true)current_pages=1;
+            else current_pages=this.page.curr;
+            //根据分页要求选出需要显示的数据
+            var data= res.data.slice(this.limit*(current_pages-1),this.limit*current_pages);
+            return {
+              "code": res.code,
+              "msg":res.msg,
+              "count": res.data.length,
+              "data": data
+            }
+          }
+          });
+          //模糊查询礼券名
+          $('#searchGift').click(function () {
+            var context=document.getElementById("search");
+            var contextV=context.value;
+            // 搜索包含某个字符的内容
+            table.reload('gift-tbl', {
+              url: 'gift/search'
+              ,methods:"post"
+              ,request: {
+                pageName: 'page' //页码的参数名称，默认：page
+                ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
+              }
+              ,where: {
+                query : contextV
+              }
+              ,page: {
+                curr: 1
+              }
+            });
+          })
+      // 显示添加礼券弹出层
+          $('#add-gift-btn').click(function() {
+            // 每次显示前重置表单
+            $('#add-gift-form')[0].reset();
+            layer.open({
+              type: 1,
+              title: '添加礼券',
+              skin: 'layui-layer-molv',
+              area: ['500px'],
+              content: $('#add-gift-layer')
+            });
+          });
+
+          // 添加礼券表单提交
+          form.on('submit(add-gift-form-submit)', function(data) {
+            // ajax方式添加礼券
+            $.ajax({
+              url: "gift/add",
+              type: "POST",
+              data: JSON.stringify(data.field),
+              contentType: 'application/json',
+              dataType: 'json',
+              success: function(data) {
+                if (data.status == 1) {
+                  layer.close(layer.index);
+                  layer.msg('添加成功');
+                  table.reload('gift-tbl');
+                } else {
+                  layer.msg('添加失败');
+                }
+              },
+              error: function() {
+                console.log("ajax error");
+              }
+            });
+            // 阻止表单跳转
+            return false;
+          });
+          // 监听行工具栏事件：删除礼券与更新礼券
+          table.on('tool(gift-tbl)', function(obj) {
+            // 获取当前行数据和lay-event的值
+            var data = obj.data;
+            var event = obj.event;
+            // 删除礼券事件
+            if (event === 'deleteGift') {
+              layer.confirm('确定删除该礼券吗？', function(index) {
+                // ajax方式删除礼券
+                $.ajax({
+                  url: 'gift/delete/' + data.giftid,
+                  type: "DELETE",
+                  dataType: 'json',
+                  success: function(data) {
+                    if (data.status == 1) {
+                      layer.msg('删除成功');
+                     table.reload('gift-tbl');
+                    } else {
+                      layer.msg('删除失败');
+                    }
+                  },
+                  error: function() {
+                    console.log("ajax error");
+                  }
+                });
+                layer.close(index);
+              });
+            }
+            // 更新礼券事件
+            if (event === 'updateGift') {
+              // //每次显示更新用户的表单前自动为表单填写该行的数据
+              form.val("update-gift-form", {
+                "giftid": data.giftid,
+                "giftname": data.giftname,
+                "giftnumber": data.giftnumber,
+                "giftscore": data.giftscore,
+                "giftinformation": data.giftinformation
+              });
+              //显示更新用户表单的弹出层
+              layer.open({
+                type: 1,
+                title: '修改礼券',
+                skin: 'layui-layer-molv',
+                area: ['500px'],
+                content: $('#update-gift-layer')
+              });
+              // 更新用户表单提交
+              form.on('submit(update-gift-form-submit)', function(data) {
+
+                // ajax方式更新用户
+                $.ajax({
+                  url: "gift/update",
+                  type: "PUT",
+                  data: JSON.stringify(data.field),
+                  contentType: 'application/json',
+                  dataType: 'json',
+                  success: function(data) {
+                    if (data.status == 1) {
+                      layer.close(layer.index);
+                      layer.msg('更新成功');
+                      table.reload('gift-tbl');
+                    } else {
+                      layer.msg('更新失败');
+                    }
+                  },
+                  error: function() {
+                    console.log("ajax error");
+                  }
+                });
+                // 阻止表单跳转
+                return false;
+              });
+            }
+          });
+
+
+
+        });
+
+      </script>
+    </div>
+<!--    <script>-->
+<!--      layui.use('laydate', function(){-->
+<!--        var laydate = layui.laydate;-->
+<!--        -->
+<!--        //执行一个laydate实例-->
+<!--        laydate.render({-->
+<!--          elem: '#start' //指定元素-->
+<!--        });-->
+<!--        //执行一个laydate实例-->
+<!--        laydate.render({-->
+<!--          elem: '#end' //指定元素-->
+<!--        });-->
+<!--      });-->
+<!--      /*用户-删除*/-->
+<!--      function member_del(obj,id){-->
+<!--          layer.confirm('确认要删除吗？',function(index){-->
+<!--              //发异步删除数据-->
+<!--              $(obj).parents("tr").remove();-->
+<!--              layer.msg('已删除!',{icon:1,time:1000});-->
+<!--          });-->
+<!--      function delAll (argument) {-->
+
+<!--        var data = tableCheck.getData();-->
+<!--  -->
+<!--        layer.confirm('确认要删除吗？'+data,function(index){-->
+<!--            //捉到所有被选中的，发异步进行删除-->
+<!--            layer.msg('删除成功', {icon: 1});-->
+<!--            $(".layui-form-checked").not('.header').parents('tr').remove();-->
+<!--        });-->
+<!--      }-->
+<!--    </script>-->
+
+  </body>
+
+</html>

@@ -1,0 +1,23 @@
+body {
+    background-color: #cccccc;
+    font-family: "微软雅黑 Light";
+    font-weight: bolder;
+}
+#myheader{
+    width:20px;
+}
+span {
+    color: red;
+}
+a {
+    text-decoration: none;
+}
+div {
+    font-size: 24px;
+}
+
+ul li {
+    float: left;
+    margin: 10px;
+    list-style: none;
+}

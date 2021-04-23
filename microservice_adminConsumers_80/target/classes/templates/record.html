@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+    <script src="js/layui-2.5.4/layui.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+          
+          <input type="text" name="search" id="search"  placeholder="请输入要查询的车位号" autocomplete="off" class="layui-input">
+          <button class="layui-btn"  id="searchID" lay-submit="" lay-filter="searchSubmit" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
+        </form>
+      </div>
+      <xblock>
+      
+
+        <span class="x-right" style="line-height:40px">共有数据：<span id="number"></span>条</span>
+      </xblock>
+      <table class="layui-table" id="user-tbl" lay-filter="user-tbl">
+
+      </table>
+      <script type="text/html" id="user-tbl-toolbar">
+
+        <button class="layui-btn" lay-event="delete">删除</button>
+      </script>
+
+
+    </div>
+    <script>
+
+      layui.use(['jquery', 'table', 'layer', 'form'], function() {
+        // 加载layui模块，使用其推荐的【预先加载】方式，详见官网【模块规范】一节
+        var $ = layui.$;
+        var table = layui.table;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        // 显示所有用户
+        table.render({
+          elem: '#user-tbl',
+          url: 'car-stop/all',
+          method: 'get',
+          page: true,
+          height : 'full-200',
+          limits: [3, 5, 10] , //一页选择显示3,5或10条数据
+          limit: 5,  //一页显示10条数据
+          cols: [
+            [
+              {field: 'parkrecordid', title: '序号'},
+              {field: 'parkingid', title: '车位号'},
+              {field: 'carnumber', title: '所停车辆车牌号'},
+              {field: 'intime' , title: '停入时间'},
+              {field: 'outtime', title: '驶离时间'},
+              {field: 'parkcost' , title: '费用'},
+              {toolbar: '#user-tbl-toolbar', title: '操作'}
+            ]
+          ],
+          done:function(res,curr,count){
+            $("#number").html(count);
+          },
+          // 表格容器id，用于表格重载
+          id: 'user-tbl',
+          parseData:function(res){ //res 即为原始返回的数据
+            console.log(res);
+            var current_pages;
+            //第一次显示的时候this.page=true，把这种情况单独列出
+            if(this.page===true)current_pages=1;
+            else current_pages=this.page.curr;
+            //根据分页要求选出需要显示的数据
+            var data= res.data.slice(this.limit*(current_pages-1),this.limit*current_pages);
+            return {
+              "code": res.code,
+              "msg":res.msg,
+              "count": res.data.length,
+              "data": data
+            }
+          }
+        });
+
+        //模糊查询
+        $('#searchID').click(function () {
+          var context=document.getElementById("search");
+          var contextV=context.value;
+          // 搜索包含某个字符的内容
+          table.reload('user-tbl', {
+            url: 'car-stop/search'
+            ,methods:"post"
+            ,request: {
+              pageName: 'page' //页码的参数名称，默认：page
+              ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+            ,where: {
+              query : contextV
+            }
+            ,page: {
+              curr: 1
+            }
+          });
+          // 阻止表单跳转
+          return false;
+        })
+
+
+        // 监听行工具栏事件：删除用户与更新用户
+        table.on('tool(user-tbl)', function(obj) {
+          // 获取当前行数据和lay-event的值
+          var data = obj.data;
+          var event = obj.event;
+
+          // 删除用户事件
+          if (event === 'delete') {
+            layer.confirm('确定删除该用户吗？', function(index) {
+              // ajax方式删除用户
+              $.ajax({
+                url: 'car-stop/' + data.parkrecordid,
+                type: "DELETE",
+                dataType: 'json',
+                success: function(data) {
+                  if (data.status == 1) {
+                    layer.msg('删除成功');
+                    table.reload('user-tbl');
+                  } else {
+                    layer.msg('删除失败');
+                  }
+                },
+                error: function() {
+                  console.log("ajax error");
+                }
+              });
+              layer.close(index);
+            });
+          }
+
+
+        });
+      });
+
+
+
+
+      layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#end' //指定元素
+        });
+      });
+
+       /*用户-停用*/
+      
+
+      /*用户-删除*/
+      function member_del(obj,id){
+          layer.confirm('确认要删除吗？',function(index){
+              //发异步删除数据
+              $(obj).parents("tr").remove();
+              layer.msg('已删除!',{icon:1,time:1000});
+          });
+      }
+
+
+
+      function delAll (argument) {
+
+        var data = tableCheck.getData();
+  
+        layer.confirm('确认要删除吗？'+data,function(index){
+            //捉到所有被选中的，发异步进行删除
+            layer.msg('删除成功', {icon: 1});
+            $(".layui-form-checked").not('.header').parents('tr').remove();
+        });
+      }
+    </script>
+    <script>var _hmt = _hmt || []; (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();</script>
+  </body>
+
+</html>

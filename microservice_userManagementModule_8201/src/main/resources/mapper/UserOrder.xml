@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.arthur.dao.UserOrderDao">
+    <select id="listAll" resultType="com.arthur.domain.UserOrder">
+    select * from "parkrecord"
+  </select>
+
+    <select id="getById" resultType="com.arthur.domain.UserOrder">
+    select * from ("parkrecord" full join "carinformation" on "parkrecord"."carid"="carinformation"."carid") where "userid"=#{userid}
+  </select>
+    <select id="totalList" resultType="int">
+    select count(1) from "parkrecord"
+  </select>
+</mapper>

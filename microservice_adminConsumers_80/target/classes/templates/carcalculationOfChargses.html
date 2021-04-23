@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+    <script src="js/layui-2.5.4/layui.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+
+    <![endif]-->
+  </head>
+  
+  <body>
+  <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+      <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+  </div>
+  <div class="x-body">
+
+
+    <table id="user-tbl" lay-filter="user-tbl" class="layui-table">
+
+    </table>
+    <script type="text/html" id="user-tbl-toolbar">
+      <a class="layui-btn layui-btn-xs" lay-event="updateUser">计算费用</a>
+    </script>
+
+  </div>
+<!--  界面弹出层-->
+  <div id="update-user-layer" style="display: none; padding: 20px">
+    <form d="update-user-form" class="layui-form" lay-filter="update-user-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">id</label>
+            <div class="layui-input-inline">
+                <input type="text" name="parkrecordid" class="layui-input" readonly>
+            </div>
+        </div>
+      <div class="layui-form-item">
+        <label  class="layui-form-label">
+          车牌号
+        </label>
+        <div class="layui-input-inline">
+          <input type="text" name="carnumber" class="layui-input" lay-verify="required" autocomplete="off" readonly>
+        </div>
+      </div>
+                  <div class="layui-form-item">
+                    <label for="location" class="layui-form-label">
+                   车位
+                    </label>
+                    <div class="layui-input-inline">
+                      <input type="text" id="location" name="location" class="layui-input" lay-verify="required" autocomplete="off" readonly>
+                    </div>
+
+                  </div>
+                  <div class="layui-form-item">
+                    <label for="intime" class="layui-form-label">
+                   停入时间
+                    </label>
+                    <div class="layui-input-inline">
+                      <input type="text" id="intime" name="intime"class="layui-input" lay-verify="required" autocomplete="off" readonly>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label for="outtime" class="layui-form-label">
+                    取车时间
+                    </label>
+                    <div class="layui-input-inline">
+                      <input type="text" id="outtime" name="outtime" class="layui-input" lay-verify="required" autocomplete="off" readonly>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label for="parktime" class="layui-form-label">停放时间
+                    </label>
+                    <div class="layui-input-inline">
+                      <input type="text" id="parktime" name="parktime" class="layui-input" lay-verify="required" autocomplete="off" readonly>
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">
+                     应付金额
+                    </label>
+                    <div class="layui-input-inline">
+                      <input type="text" class="layui-input" id="parkcost" name="parkcost" lay-verify="required" autocomplete="off" readonly >
+                    </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <button  class="layui-btn" lay-submit lay-filter="update-user-form-submit">
+                          保存
+                      </button>
+                  </div>
+                </form>
+              </div>
+
+              <script>
+                layui.use(['jquery', 'table', 'layer', 'form'], function() {
+                  // 加载layui模块，使用其推荐的【预先加载】方式，详见官网【模块规范】一节
+                  var $ = layui.$;
+                  var table = layui.table;
+                  var layer = layui.layer;
+                  var form = layui.form;
+                  // 显示所有用户
+                  table.render({
+                    elem: '#user-tbl',
+                    url: 'cardetailEnquiry/all',
+                    method: 'get',
+                    cols: [
+                      [
+                        {field: 'carnumber', title: '车牌号'},
+                        {field: 'location',title: '车位'},
+                        {field: 'intime', title: '停入时间'},
+                        {field: 'outtime', title: '离开时间'},
+                        {field: 'parktime', title: '停放时间'},
+                        {field: 'parkcost', title: '金额'},
+                        {toolbar: '#user-tbl-toolbar', title: '操作'}
+                      ]
+                    ],
+                    // 表格容器id，用于表格重载
+                    id: 'user-tbl',
+                  });
+
+                  table.on('tool(user-tbl)', function(obj) {
+                    // 获取当前行数据和lay-event的值
+                    var data = obj.data;
+                    var event = obj.event;
+                      function getHour(s1,s2) {
+                          s1 = new Date(s1.replace(/-/g, '/'));
+                          s2 = new Date(s2.replace(/-/g, '/'));
+                          var ms = Math.abs(s1.getTime() - s2.getTime());
+                          return ms / 1000 / 60 / 60;
+                      }
+                      var h=getHour(data.outtime, data.intime);
+                      var h=h.toFixed(0);
+                    // 更新用户事件
+                    if (event === 'updateUser') {
+                      // 每次显示更新用户的表单前自动为表单填写该行的数据
+                      form.val('update-user-form', {
+                          "parkrecordid": data.parkrecordid,
+                        "carnumber": data.carnumber,
+                        "location": data.location,
+                        "intime": data.intime,
+                        "outtime": data.outtime,
+                        "parktime":h,
+                        "parkcost":h
+                      });
+                      layer.open({
+                        type: 1,
+                        title: '计算费用',
+                        skin: 'layui-layer-molv',
+                        area: ['500px'],
+                        content: $('#update-user-layer')
+                      });
+                      // 更新用户表单提交
+                      form.on('submit(update-user-form-submit)', function(data) {
+                        // ajax方式更新用户
+                        $.ajax({
+                          url: "cardetailEnquiry/update",
+                          type: "PUT",
+                          data: JSON.stringify(data.field),
+                          contentType: 'application/json',
+                          dataType: 'json',
+                          success: function(data) {
+                            if (data.status == 1) {
+                              layer.close(layer.index);
+                              layer.msg('保存成功');
+                              table.reload('user-tbl');
+                            } else {
+                              layer.msg('保存失败');
+                            }
+                          },
+                          error: function() {
+                            console.log("ajax error");
+                          }
+                        });
+                        // 阻止表单跳转
+                        return false;
+                      });
+                    }
+                  });
+                });
+              </script>
+
+              </body>
+
+            </html>

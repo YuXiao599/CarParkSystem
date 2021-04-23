@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.arthur.dao.UserDao">
+
+  <!-- 根据用户名和密码查找用户 -->
+  <select id="getByNamePwd" resultType="com.arthur.bean.User">
+    SELECT * FROM "user" WHERE "username" = #{username}  AND "userpwd" = #{userpwd}
+  </select>
+
+  <!-- 添加用户 -->
+  <insert id="insert">
+    INSERT INTO "user"("userid","username","userpwd","phone","userstate","score","registertime")  VALUES(#{userid},#{username}, #{userpwd}, #{phone},#{userstate},#{score},SYSDATE)
+  </insert>
+
+  <!-- 添加用户留言 -->
+  <insert id="fallbackmassage">
+    INSERT INTO "feedback"("informationid","informationcontent","informationtime","informationstate","userid")  VALUES(#{informationid},#{massage},SYSDATE,'未审核',#{userid})
+  </insert>
+
+  <!-- 查找某用户全部车辆 -->
+  <select id="findMyCar" resultType="com.arthur.bean.Car">
+    SELECT * FROM "carinformation" WHERE "userid" = #{userid}
+  </select>
+
+  <!-- 查找全部可兑换礼物 -->
+  <select id="findAllGift" resultType="com.arthur.bean.Gift">
+    SELECT * FROM "gift"
+  </select>
+
+  <!-- 查询已有礼券数量 -->
+  <select id="getHaveScore" resultType="java.lang.Integer">
+    SELECT "score" FROM "user" WHERE "userid"=#{userid}
+  </select>
+
+  <!-- 查询兑换所需礼券 -->
+  <select id="getNeedScore" resultType="java.lang.Integer">
+    SELECT "giftscore" FROM "gift" WHERE "giftid"= #{giftid}
+  </select>
+
+  <!-- 更新用户礼券数量  -->
+  <update id="updateScore">
+    UPDATE "user" set "score"=#{surplusScore} where "userid" = #{userid}
+  </update>
+
+  <!-- 更新礼物数量 -->
+  <update id="updateGiftNumber">
+    UPDATE "gift" set "giftnumber"=("giftnumber"-1) where "giftid" = #{giftid}
+  </update>
+
+  <!-- 查找所有停车位信息 -->
+  <select id="findAllPark" resultType="com.arthur.bean.Parking">
+    SELECT * FROM "parking"
+  </select>
+
+  <!-- 查找所有增值服务信息 -->
+  <select id="findAllAddValue" resultType="com.arthur.bean.AddValue">
+    SELECT * FROM "addedservice"
+  </select>
+
+  <!-- 添加一条服务购买信息 -->
+  <insert id="buyOneService">
+    INSERT INTO "addedservicerecord"("recordid","serviceid","userid","time")  VALUES(#{recordid},#{serviceid},#{userid},SYSDATE)
+  </insert>
+
+  <!-- 查找可预约的车位 -->
+  <select id="findAllAppMnet" resultType="com.arthur.bean.Parking">
+    SELECT * FROM "parking" WHERE "state" = '未停入'
+  </select>
+
+  <!-- 添加一条预约信息 -->
+  <insert id="appOneInfo">
+    INSERT INTO "reserveinformation"("reserveid","parkingid","userid","reservetime")  VALUES(#{reserveid},#{parkingid},#{userid},#{reservetime})
+  </insert>
+
+  <!-- 更新车位状态 -->
+  <update id="updateParkingInfo">
+    UPDATE "parking" set "state"='预约' where "parkingid"=#{parkingid}
+  </update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- 删除用户 -->
+  <delete id="deleteById">
+    delete from users where id = #{id}
+  </delete>
+  
+  <!-- 更新用户 -->
+  <update id="update">
+    update users set account = #{account}, password = #{password}, name = #{name}, info = #{info} where id = #{id}
+  </update>
+  
+  <!-- 根据id查找用户 -->
+  <select id="getById" resultType="com.arthur.bean.User">
+    select * from users where id = #{id}
+  </select>
+</mapper>

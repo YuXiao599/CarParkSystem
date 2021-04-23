@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.arthur.dao.RecordDao">
+  <!-- 查找所有用户 -->
+  <select id="listAll" resultType="com.arthur.domain.Parkrecord">
+    select * from "parkrecord","carinformation" where "parkrecord"."carid"="carinformation"."carid"
+
+  </select>
+
+  <!-- 添加用户 -->
+  <insert id="insert">
+   <!--mysql-->
+  <!--insert into users(account, password, name, info) values (#{account}, #{password}, #{name}, #{info})-->
+    insert into users (id,account, password, name, info) values (SEQ_USERS_ID.nextVal,#{account}, #{password}, #{name},#{info})</insert>
+  
+  <!-- 删除用户 -->
+  <delete id="deleteById">
+    delete from "parkrecord" where "parkrecordid" = #{parkrecordid}
+  </delete>
+  
+  <!-- 更新用户 -->
+  <update id="update">
+    update users set account = #{account}, password = #{password}, name = #{name}, info = #{info} where id = #{id}
+  </update>
+
+  <!-- 更新车牌号 -->
+  <update id="updateCarnumber">
+
+
+  insert into "parkrecord" ("parkrecordid","carid", "parkingid") values (SEQ_PARKRECORD_ID.nextVal,(select "carid" from "carinformation" where "carnumber"=#{carnumber}),#{parkingid})
+
+  </update>
+
+
+  <select id="findByName" resultType="com.arthur.domain.Parkrecord">
+
+    select * from "parkrecord","carinformation" where "parkrecord"."carid"="carinformation"."carid" and "parkingid"=#{parkingid}
+  </select>
+
+
+  
+
+</mapper>

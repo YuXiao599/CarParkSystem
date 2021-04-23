@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="arthur.dao.OperationDao">
+  <!-- 查找所有礼券 -->
+  <select id="insert" resultType="arthur.domain.Operation" parameterType="string">
+   insert into "operation" ("operationid","operationcontent") values ("SEQ_operation_ID".nextVal, #{operationcontent})
+   </select>
+
+</mapper>

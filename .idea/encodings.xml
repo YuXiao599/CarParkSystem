@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/microservice_adminConsumers_80/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice_api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice_auxiliaryFunctionModule_8401/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice_dailyBusinessManagementModule1_8301/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice_eureka_server_7001/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice_parkingManagementModule_8001/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice_userConsumer_81/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice_userForegroundInterface_8101/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice_userManagementModule_8201/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/microservice_valueAddedServiceModule_8501/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+  </component>
+</project>

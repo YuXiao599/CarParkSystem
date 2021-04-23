@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="arthur.dao.ReserveDao">
+
+  <select id="findReserveList" resultType="arthur.domain.Reserve">
+        SELECT * FROM  ("reserveinformation" full join "carinformation" on "reserveinformation"."userid"="carinformation"."userid") full join "user" on "reserveinformation"."userid"="user"."userid"
+  where 1=1 and "reservetime" BETWEEN to_date(#{start_time,jdbcType=DATE}, 'yyyy-mm-dd hh24:mi:ss') and to_date(#{end_time,jdbcType=DATE}, 'yyyy-mm-dd hh24:mi:ss')
+  </select>
+
+</mapper>

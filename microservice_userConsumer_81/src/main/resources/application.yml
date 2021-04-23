@@ -1,0 +1,30 @@
+# 服务器配置部分
+server:
+  # 配置服务器端口号
+  port: 81
+
+# 追加Eureka服务的注册地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+
+spring:
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+
+  resources:
+    static-locations: classpath:/assets/
+
+  http:
+    encoding.charset: UTF-8
+    encoding.enable: true
+    encoding.force: true
+  application:
+  # 应用上下文名称
+    name: MICROSERVICE-USERCONSUMER
+
+  thymeleaf:
+    mode: LEGACYHTML5

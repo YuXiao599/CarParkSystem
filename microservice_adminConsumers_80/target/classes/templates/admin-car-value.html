@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>停车场管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+    <script src="js/layui-2.5.4/layui.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--   [if lt IE 9]>-->
+<!--    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>-->
+<!--    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>-->
+<!--    <![endif]-->
+</head>
+  
+  <body>
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="/index">首页</a>
+        <a href="admin-car-value">增值服务管理</a>
+        <a>
+          <cite>增值服务</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so" lay-filter="SearchFrom" id="SearchFrom" onsubmit="return false">
+          <input type="text" name="search" id="search" placeholder="请输入服务名" autocomplete="off" class="layui-input">
+            <button class="layui-btn" id="searchService" lay-submit="" lay-filter="searchSubmit" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </form>
+      </div>
+      <xblock>
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn"id="add-service-btn" ><i class="layui-icon"></i>添加</button>
+      </xblock>
+        <div class="layui-row">
+        <table id="service-tbl" lay-filter="service-tbl"  ></table>
+        <script type="text/html" id="service-tbl-toolbar" style="color: #00F7DE">
+            <a title="编辑"  lay-event="updateService">
+                <i class="layui-icon">&#xe642;</i>
+            </a>
+            <a title="删除"  lay-event="deleteService">
+                <i class="layui-icon">&#xe640;</i>
+            </a>
+        </script>
+        </div>
+    </div>
+
+<!--        <div class="page">-->
+<!--        <div>-->
+<!--          <a class="prev" href="">&lt;&lt;</a>-->
+<!--          <a class="num" href="">1</a>-->
+<!--          <span class="current">2</span>-->
+<!--          <a class="num" href="">3</a>-->
+<!--          <a class="num" href="">489</a>-->
+<!--          <a class="next" href="">&gt;&gt;</a>-->
+<!--        </div>-->
+<!--      </div>-->
+
+        <!--      更新增值服务信息-->
+        <div class="x-body" id="update-service-layer" style="display: none; padding: 20px">
+            <form lay-filter="update-service-form" class="layui-form layui-form-pane" id="update-service-form">
+                <div class="layui-form-item" style="display: none;">
+                    <label  class="layui-form-label">
+                        <span class="x-red">*</span>服务id
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text"  name="serviceid" required=""
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label  class="layui-form-label">
+                        <span class="x-red">*</span>服务名
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text"  name="servicename" required="" lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label  class="layui-form-label">
+                        <span class="x-red">*</span>金额
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text"  name="money" required="" lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label for="regulation" class="layui-form-label">
+                        <span class="x-red">*</span>使用规则
+                    </label>
+                    <div class="layui-input-block">
+                        <!--              <textarea placeholder="请输入内容" id="giftinformation" name="giftinformation" class="layui-textarea"></textarea>-->
+                        <input type="text"  name="regulation" required="" lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="update-service-form-submit">提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--      添加服务-->
+        <div class="x-body" id="add-service-layer" style="display: none; padding: 20px">
+            <form lay-filter="add-service-form" class="layui-form layui-form-pane" id="add-service-form">
+
+                <div class="layui-form-item">
+                    <label  class="layui-form-label">
+                        <span class="x-red">*</span>服务名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text"  name="servicename" id="servicename" required="" lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label  class="layui-form-label">
+                        <span class="x-red">*</span>金额
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text"  name="money" id="money" required="" lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label for="regulation" class="layui-form-label">
+                        <span class="x-red">*</span>使用规则
+                    </label>
+                    <div class="layui-input-block">
+                        <!-- <textarea placeholder="请输入内容" id="giftinformation" name="giftinformation" class="layui-textarea"></textarea>-->
+                        <input type="text"  name="regulation" id="regulation" required="" lay-verify="required"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="add-service-form-submit">提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+    <script>
+        layui.use(['jquery', 'table', 'layer', 'form'], function() {
+            var $ = layui.$;
+            var table = layui.table;
+            var layer = layui.layer;
+            var form = layui.form;
+
+            // 显示所有服务
+            table.render({
+                elem: '#service-tbl',
+                url: 'service/all',
+                method: 'get'
+                ,page: true,
+                limits: [3, 5, 10] , //一页选择显示3,5或10条数据
+                limit: 5,  //一页显示10条数据
+                // 表格容器id，用于表格重载
+                id: 'service-tbl'
+                ,sort:true
+                ,parseData:function(res){ //res 即为原始返回的数据
+                console.log(res);
+                var current_pages;
+                //第一次显示的时候this.page=true，把这种情况单独列出
+                if(this.page===true)current_pages=1;
+                else current_pages=this.page.curr;
+                //根据分页要求选出需要显示的数据
+                var data= res.data.slice(this.limit*(current_pages-1),this.limit*current_pages);
+                return {
+                    "code": res.code,
+                    "msg":res.msg,
+                    "count": res.data.length,
+                    "data": data
+                }
+            },
+                cols: [
+                    [
+                         {type: 'checkbox', fixed: 'left'},
+                        // {toolbar: '#servicecheck-tbl-toolbar',width:50,align:'center', title: ''},
+                        {field: 'serviceid', width:150,align:'center',title: '增值服务id',sort:true},
+                        {field: 'servicename',width:150,unresize: true, title: '服务名称'},
+                        {field: 'regulation',width:260, title: '使用规则'},
+                        {field: 'money', width:80,align:'center',title: '金额',unresize: true,sort:true},
+                        {field: 'creationtime', width:220,align:'center',unresize: true,title: '创建时间',sort:true},
+                        {field: 'administratorid', width:160,align:'center',unresize: true,title: '添加服务的管理员id'},
+                        {toolbar: '#service-tbl-toolbar',width:180,align:'center', unresize: true,title: '操作'}
+                    ]
+                ]
+
+            });
+
+            $('#searchService').click(function () {
+                var context=document.getElementById("search");
+                var contextV=context.value;
+                // 搜索包含某个字符的内容
+                table.reload('service-tbl', {
+                    url: 'service/search'
+                    ,methods:"post"
+                    ,request: {
+                        pageName: 'page' //页码的参数名称，默认：page
+                        ,limitName: 'pageSize' //每页数据量的参数名，默认：limit
+                    }
+                    ,where: {
+                        query : contextV
+                    }
+                    ,page: {
+                        curr: 1
+                    }
+                });
+            })
+            // 显示服务礼券弹出层
+            $('#add-service-btn').click(function() {
+                // 每次显示前重置表单
+                $('#add-service-form')[0].reset();
+                layer.open({
+                    type: 1,
+                    title: '添加服务',
+                    skin: 'layui-layer-molv',
+                    area: ['500px'],
+                    content: $('#add-service-layer')
+                });
+            });
+
+            // 添加服务表单提交
+            form.on('submit(add-service-form-submit)', function(data) {
+                var servicename = $("#servicename").val();
+                var regulation = $("#regulation").val();
+                var money = $("#money").val();
+                var administratorid=localStorage["administratorid"];
+                var admin = {
+                    "servicename": servicename,
+                    "regulation": regulation,
+                    "money": money,
+                    "administratorid": administratorid,
+                };
+                console.log(administratorid);
+                // ajax方式添加服务
+                $.ajax({
+                    url: "service/add",
+                    type: "POST",
+                    data: JSON.stringify(admin),
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == 1) {
+                            layer.close(layer.index);
+                            layer.msg('添加成功');
+
+                            table.reload('service-tbl');
+                        } else {
+                            layer.msg('添加失败');
+                        }
+                    },
+                    error: function() {
+                        console.log("ajax error");
+                    }
+                });
+                // 阻止表单跳转
+                return false;
+            });
+            // 监听行工具栏事件：删除礼券与更新礼券
+            table.on('tool(service-tbl)', function(obj) {
+                // 获取当前行数据和lay-event的值
+                var data = obj.data;
+                var event = obj.event;
+                // 删除礼券事件
+                if (event === 'deleteService') {
+                    layer.confirm('确定删除该服务吗？', function(index) {
+                        // ajax方式删除礼券
+                        $.ajax({
+                            url: 'service/delete/' + data.serviceid,
+                            type: "DELETE",
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data.status == 1) {
+                                    layer.msg('删除成功');
+                                    table.reload('service-tbl');
+                                } else {
+                                    layer.msg('删除失败');
+                                }
+                            },
+                            error: function() {
+                                console.log("ajax error");
+                            }
+                        });
+                        layer.close(index);
+                    });
+                }
+                // 更新礼券事件
+                if (event === 'updateService') {
+                    // //每次显示更新用户的表单前自动为表单填写该行的数据
+                    form.val('update-service-form', {
+                      "serviceid": data.serviceid,
+                      "servicename": data.servicename,
+                      "regulation": data.regulation,
+                      "money": data.money,
+                    });
+                    //显示更新用户表单的弹出层
+                    layer.open({
+                        type: 1,
+                        title: '修改服务',
+                        skin: 'layui-layer-molv',
+                        area: ['500px'],
+                        content: $('#update-service-layer')
+                    });
+                    // 更新用户表单提交
+                    form.on('submit(update-service-form-submit)', function(data) {
+                        // ajax方式更新用户
+                        $.ajax({
+                            url: "service/update",
+                            type: "PUT",
+                            data: JSON.stringify(data.field),
+                            contentType: 'application/json',
+                            dataType: 'json',
+                            success: function(data) {
+                                if (data.status == 1) {
+                                    layer.close(layer.index);
+                                    layer.msg('更新成功');
+                                    table.reload('service-tbl');
+                                } else {
+                                    layer.msg('更新失败');
+                                }
+                            },
+                            error: function() {
+                                console.log("ajax error");
+                            }
+                        });
+                        // 阻止表单跳转
+                        return false;
+                    });
+                }
+            });
+
+
+
+        });
+
+      </script>
+  </body>
+
+</html>

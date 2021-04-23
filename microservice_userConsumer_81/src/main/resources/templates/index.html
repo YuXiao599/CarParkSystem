@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="zxx">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+	<title>停车管理</title>
+	<!-- Template CSS -->
+	<link rel="stylesheet" href="css/style-starter.css"/>
+	<!-- Template CSS -->
+	<link href="http://fonts.googleapis.com/css?family=Spartan:400,500,600,700,900&amp;display=swap" rel="stylesheet"/>
+	<!-- Template CSS -->
+	<script src="js/jquery-3.1.1.js" language="javascript" type="text/javascript"></script>
+</head>
+
+<body class="cbp-spmenu-push">
+	<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+		<h3>菜单</h3>
+
+		<ul>
+			<li><a class="active" href="index">首页</a></li>
+			<li><a href="about">关于我们</a></li>
+			<li><a href="services">服务</a></li>
+			<li><a href="contact">注册</a></li>
+		</ul>
+	</nav>
+	<div class="main buttonset">
+		<!--搜索框-->
+		<div class="tophny-header">
+			<div class="container">
+				<div class="hny-topgds">
+					<div class="menu-notify">
+						<button id="showLeftPush"><span class="fa fa-bars" aria-hidden="true"></span></button>
+					</div>
+					<div class="logo text-center">
+						<h1><a class="navbar-brand" href="index">
+								欢迎您！
+							</a></h1>
+					</div>
+					<div class="icon-left search-right text-right">
+						<a class="topuser" href="#login"><span class="fa fa-user" aria-hidden="true"></span></a>
+						<div id="login" class="pop-overlay">
+							<div class="popup">
+								<h3 class="hny-title two">在此登录</h3>
+								<form action="#" method="post" class="search-box">
+									<input type="text" placeholder="输入您的用户名" name="username" id="username" required="required" autofocus=""/><span id="tip_username"></span>
+									<input type="password" placeholder="输入您的密码" name="userpwd" id="userpwd" required="required" autofocus=""/><span id="tip_userpwd"></span>
+									<button type="button" class="btn" onclick="login()">登录</button>
+								</form>
+							</div>
+							<a class="close" href="#close">×</a>
+						</div>
+						<a class="topuser"  title="退出" onclick="logout()"><span class="fa fa-sign-out" aria-hidden="true"></span></a>
+
+					</div>
+				</div>
+			</div>
+			<!--//tophny-header-->
+		</div>
+		<section class="w3l-main-slider position-relative" id="home">
+		</section>
+		<!-- 主要功能模块-->
+		<section class="w3l-features-4" id="services">
+			<div class="features4-block py-5">
+				<div class="container py-lg-3">
+					<div class="title-head text-center mb-lg-5 mb-4">
+						<h3 class="hny-title">
+							我们的 <span>优质</span> 服务</h3>
+					</div>
+					<div class="features4-grids text-left row">
+						<div class="features4-grid">
+							<div class="features4-grid-inn">
+								<div class="icon-fea4">
+									<span class="fa fa-search" aria-hidden="true"></span>
+								</div>
+								<h5><a href="car-search-list">车位查看</a></h5>
+								<p>查询您的车位 <span class="p-ab">如果您有一辆车需要停放在此，并且您希望可以自由的挑选可用的车位，请单击此按钮.</span> </p>
+								<div class="read-arrow text-right mt-md-4 mt-3">
+									<a href="car-search-list"><span class="fa fa-arrow-right" aria-hidden="true"></span></a>
+								</div>
+							</div>
+						</div>
+						<div class="features4-grid">
+							<div class="features4-grid-inn">
+								<div class="icon-fea4">
+									<span class="fa fa-american-sign-language-interpreting " aria-hidden="true"></span>
+								</div>
+								<h5><a href="car-appointment">车位预约</a></h5>
+								<p>预约您的车位 <span class="p-ab">如果您现在无法将您的车辆停入车位，但是在不远的将来您会将车辆停在此处，请单击此按钮.</span> </p>
+								<div class="read-arrow text-right mt-md-4 mt-3">
+									<a href="car-appointment"><span class="fa fa-arrow-right" aria-hidden="true"></span></a>
+								</div>
+							</div>
+						</div>
+						<div class="features4-grid">
+							<div class="features4-grid-inn">
+								<div class="icon-fea4">
+									<span class="fa fa-car" aria-hidden="true"></span>
+								</div>
+								<h5><a href="car-my">我的车辆</a></h5>
+								<p>管理您的车辆 <span class="p-ab">您可以在此将您的车牌号添加进入您的库中.</br>并且管理它们.</span> </p>
+								<div class="read-arrow text-right mt-md-4 mt-3">
+									<a href="car-my"><span class="fa fa-arrow-right" aria-hidden="true"></span></a>
+								</div>
+							</div>
+						</div>
+						<div class="features4-grid">
+							<div class="features4-grid-inn">
+								<div class="icon-fea4">
+									<span class="fa fa-server" aria-hidden="true"></span>
+								</div>
+								<h5><a href="services-add-value">增值服务</a></h5>
+								<p>附加给您的服务 <span class="p-ab">如果您在停车场“投资”了一定的份额，我们会给您提供诸如洗车、保险等服务.</span> </p>
+								<div class="read-arrow text-right mt-md-4 mt-3">
+									<a href="services-add-value"><span class="fa fa-arrow-right" aria-hidden="true"></span></a>
+								</div>
+							</div>
+						</div>
+						<div class="features4-grid">
+							<div class="features4-grid-inn">
+								<div class="icon-fea4">
+									<span class="fa fa-exchange" aria-hidden="true"></span>
+								</div>
+								<h5><a href="services-exchage">我的兑换</a></h5>
+								<p>礼券 <span class="p-ab">您在停车场停车超过一定次数后，我们会向您分发礼券。您可以用这些礼券来兑换一些小奖品.</span> </p>
+								<div class="read-arrow text-right mt-md-4 mt-3">
+									<a href="services-exchage"><span class="fa fa-arrow-right" aria-hidden="true"></span></a>
+								</div>
+							</div>
+						</div>
+						<div class="features4-grid">
+							<div class="features4-grid-inn">
+								<div class="icon-fea4">
+									<span class="fa fa-quora" aria-hidden="true"></span>
+								</div>
+								<h5><a href="services-fallback">反馈信息</a></h5>
+								<p>在此反馈 <span class="p-ab">您可以在此处反馈您的意见,可以述说任何与我们相关的话题
+									您的每一条宝贵意见都是我们前进的动力.</span> </p>
+								<div class="read-arrow text-right mt-md-4 mt-3">
+									<a href="services-fallback"><span class="fa fa-arrow-right" aria-hidden="true"></span></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- 自我介绍 -->
+		<div class="w3l-middle py-5">
+			<div class="container py-xl-5 py-lg-3">
+				<div class="row align-items-center">
+					<div class="welcome-left col-lg-6">
+						<div class="title-head text-left">
+							<h6 class="sub-title-1">We fix it</h6>
+							<h3 class="hny-title two">
+								Repairing the world one <span>light bulb </span> at a time.</h3>
+							<p class="mt-3">Lorem ipsum viverra feugiat. <span class="p-ab">Pellen tesque libero ut justo,
+								ultrices in ligula. Semper at tempufddfel.Lorem ipsum viverra feugiat. Pellen tesque
+								libero ut justo,.</span> </p>
+						</div>
+					</div>
+					<div class="welcome-right text-lg-right col-lg-6">
+						<a href="contact.html" class="btn btn-style-1 btn-primary mt-sm-5 mt-4">Contact Us</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<section class="w3l-stats py-5" id="stats">
+			<div class="gallery-inner container py-md-4">
+				<div class="row stats-con text-white">
+					<div class="col-lg-3 col-6 stats_info counter_grid">
+						<p class="counter">645</p>
+						<h4>Completed Projects</h4>
+					</div>
+					<div class="col-lg-3 col-6 stats_info counter_grid1">
+						<p class="counter">329</p>
+						<h4>Awards</h4>
+					</div>
+					<div class="col-lg-3 col-6 stats_info counter_grid mt-md-0 mt-5">
+						<p class="counter">63</p>
+						<h4>Our Branches</h4>
+					</div>
+					<div class="col-lg-3 col-6 stats_info counter_grid2 mt-md-0 mt-5">
+						<p class="counter">1045</p>
+						<h4>Happy Clients</h4>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- 尾部 -->
+		<section class="w3l-footer">
+			<footer class="footer-28">
+				<div class="footer-bg-layer">
+					<div class="container py-lg-3">
+						<div class="row footer-top-28">
+							<div class="col-lg-6 col-md-5 footer-list-28 mt-5">
+								<h6 class="footer-title-28">Contact information</h6>
+								<ul>
+									<li>
+										<p><strong>Address</strong> : #135 block, Barnard St. Brooklyn, NY 10036, USA
+										</p>
+									</li>
+									<li>
+										<p><strong>Phone</strong> : <a href="tel:+(12)234-11-24">+(12)234-11-24</a></p>
+									</li>
+									<li>
+										<p><strong>Email</strong> : <a
+												href="mailto:example@mail.com">example@mail.com</a></p>
+									</li>
+								</ul>
+
+								<div class="main-social-footer-28 mt-3">
+									<ul class="social-icons">
+										<li class="facebook">
+											<a href="#link" title="Facebook">
+												<span class="fa fa-facebook" aria-hidden="true"></span>
+											</a>
+										</li>
+										<li class="twitter">
+											<a href="#link" title="Twitter">
+												<span class="fa fa-twitter" aria-hidden="true"></span>
+											</a>
+										</li>
+										<li class="dribbble">
+											<a href="#link" title="Dribbble">
+												<span class="fa fa-dribbble" aria-hidden="true"></span>
+											</a>
+										</li>
+										<li class="google">
+											<a href="#link" title="Google">
+												<span class="fa fa-google" aria-hidden="true"></span>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-7">
+								<div class="row">
+									<div class="col-sm-4 col-6 footer-list-28 mt-5">
+										<h6 class="footer-title-28">Company</h6>
+										<ul>
+											<li><a href="about.html">About Us</a></li>
+											<li><a href="#blogpost">Blog Posts</a></li>
+											<li><a href="services.html">Servies</a></li>
+											<li><a href="#pricing">Pricing</a></li>
+										</ul>
+									</div>
+									<div class="col-sm-4 col-6 footer-list-28 mt-5">
+										<h6 class="footer-title-28">Support</h6>
+										<ul>
+											<li><a href="#link">Documentation</a></li>
+											<li><a href="#link">Privacy policy</a></li>
+											<li><a href="#link">Terms of service</a></li>
+											<li><a href="#link">24/7 support</a></li>
+										</ul>
+									</div>
+									<div class="col-sm-4 footer-list-28 mt-5">
+										<h6 class="footer-title-28">Categories</h6>
+										<ul>
+											<li><a href="services.html">Plumbing</a></li>
+											<li><a href="services.html">Carpenter</a></li>
+											<li><a href="services.html">Electrician</a></li>
+											<li><a href="services.html">Wall painting</a></li>
+
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="midd-footer-28 align-center py-lg-4 py-3 mt-5">
+						<div class="container">
+							<p class="copy-footer-28 text-center">Copyright &copy; 2020.Company name All rights reserved.</p>
+						</div>
+					</div>
+				</div>
+			</footer>
+
+			<!-- move top -->
+			<button onclick="topFunction()" id="movetop" title="Go to top">
+				<span class="fa fa-arrow-up" aria-hidden="true"></span>
+			</button>
+			<script>
+				function login(){
+					var username=$("#username").val();
+					var userpwd=$("#userpwd").val();
+					if (username == "") {
+						$("#tip_username").html("用户名不能为空");
+						return;
+					} else if (userpwd == "") {
+						$("#tip_username").html("");
+						$("#tip_userpwd").html("密码不能为空");
+						return;
+					}else {
+						$("#tip_username").html("");
+						$("#tip_userpwd").html("");
+					}
+					$.ajax({
+						type: "post",
+						dataType: "json",
+						url: "LoginController",
+						data: {
+							"username":username,
+							"userpwd":userpwd
+						},
+						success(data){
+							if(data==null){
+								alert("用户不存在，请注册！")
+								location.href =encodeURI("/contact");
+							}else {
+								if(localStorage["username"]==null){
+									if(data.userstate=="停用"){
+										alert("账号异常，请联系管理员！！");
+									}else {
+										console.log(data);
+										localStorage.username=data.username;
+										localStorage.userid=data.userid;
+										alert("登录成功");
+										location.href =encodeURI("/index");
+									}
+								}else {
+									alert("用户"+localStorage["username"]+"已登陆！");
+								}
+							}
+						}
+
+					})
+				}
+				function logout(){
+					var username=localStorage["username"];
+					if(username==null){
+						alert("您还未登录！！")
+					}else {
+						localStorage.clear();
+						alert("退出成功！")
+					}
+					location.href=encodeURI("/index");
+				}
+				// When the user scrolls down 20px from the top of the document, show the button
+				window.onscroll = function () {
+					scrollFunction()
+				};
+
+				function scrollFunction() {
+					if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+						document.getElementById("movetop").style.display = "block";
+					} else {
+						document.getElementById("movetop").style.display = "none";
+					}
+				}
+
+				// When the user clicks on the button, scroll to the top of the document
+				function topFunction() {
+					document.body.scrollTop = 0;
+					document.documentElement.scrollTop = 0;
+				}
+			</script>
+			<!-- /move top -->
+		</section>
+	</div>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<!--/top-nav-->
+	<script src="js/jquery-2.1.4.min.js"></script>
+	<script src="js/modernizr.custom.js"></script>
+	<script src="js/classie.js"></script>
+	<script>
+		var menuLeft = document.getElementById('cbp-spmenu-s1'),
+			showLeftPush = document.getElementById('showLeftPush'),
+			body = document.body;
+
+		showLeftPush.onclick = function () {
+			classie.toggle(this, 'active');
+			classie.toggle(body, 'cbp-spmenu-push-toright');
+			classie.toggle(menuLeft, 'cbp-spmenu-open');
+			disableOther('showLeftPush');
+		};
+
+		function disableOther(button) {
+			if (button !== 'showLeftPush') {
+				classie.toggle(showLeftPush, 'disabled');
+			}
+		}
+	</script>
+	<!--//top-nav-->
+	  <!-- libhtbox -->
+	  <script src="js/lightbox-plus-jquery.min.js"></script>
+	<!-- stats number counter-->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<script src="js/jquery.countup.js"></script>
+	<script>
+		$('.counter').countUp();
+	</script>
+	<!-- //stats number counter -->
+	<script src="js/owl.carousel.js"></script>
+	<!-- script for banner slider-->
+	<script>
+		$(document).ready(function () {
+			$('.owl-one').owlCarousel({
+				loop: true,
+				margin: 0,
+				nav: false,
+				responsiveClass: true,
+				autoplay: true,
+				autoplayTimeout: 5000,
+				autoplaySpeed: 1000,
+				autoplayHoverPause: false,
+				responsive: {
+					0: {
+						items: 1,
+						nav: false
+					},
+					480: {
+						items: 1,
+						nav: false
+					},
+					667: {
+						items: 1,
+						nav: true
+					},
+					1000: {
+						items: 1,
+						nav: true
+					}
+				}
+			})
+		})
+	</script>
+	<!-- //script -->
+	<!-- /script-blogs-->
+	<script>
+		$(document).ready(function () {
+			$('.owl-two').owlCarousel({
+				loop: true,
+				margin: 30,
+				nav: false,
+				responsiveClass: true,
+				autoplay: true,
+				autoplayTimeout: 5000,
+				autoplaySpeed: 1000,
+				autoplayHoverPause: false,
+				responsive: {
+					0: {
+						items:2,
+						nav: false
+					},
+					480: {
+						items:2,
+						nav: false
+					},
+					700: {
+						items: 2,
+						nav: false
+					},
+					1090: {
+						items: 3,
+						nav: false
+					}
+				}
+			})
+		})
+	</script>
+	<!-- //script-blogs-->
+	<!-- script for owlcarousel -->
+	<script>
+		$(document).ready(function () {
+			$('.owl-testimonial').owlCarousel({
+				loop: true,
+				margin: 0,
+				nav: false,
+				responsiveClass: true,
+				autoplay: true,
+				autoplayTimeout: 5000,
+				autoplaySpeed: 1000,
+				autoplayHoverPause: false,
+				responsive: {
+					0: {
+						items: 1,
+						nav: false
+					},
+					480: {
+						items: 1,
+						nav: false
+					},
+					667: {
+						items: 1,
+						nav: false
+					},
+					1000: {
+						items: 1,
+						nav: false
+					}
+				}
+			})
+		})
+	</script>
+	<!-- script for owlcarousel -->
+	<!-- disable body scroll which navbar is in active -->
+	<script src="js/bootstrap.min.js"></script>

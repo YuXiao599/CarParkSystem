@@ -1,0 +1,55 @@
+server:
+  port: 8101
+  address: 127.0.0.1
+  session-timeout: 30
+  tomcat.max-threads: 0
+  tomcat.uri-encoding: UTF-8
+
+#将服务提供者注册到eureka中
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001//eureka
+  instance:
+    # 约定eureka服务提供者的访问名称
+    instance-id: microservice_userForegroundInterface_8101
+    # 链接是否显示ip地址 true-显示  false-不显示
+    prefer-ip-address: true
+
+# 配置服务提供者的微服务信息
+info:
+  app_name: microservice_dept_8001
+  company_name: www.guochengyi.com
+  build.artifactId: $project.artifactId$
+  build.verion: $project.version$
+
+
+spring:
+  # 应用全局配置
+  application:
+    # 应用上下文名称
+    name: MICROSERVICE-DEPT
+  # HTTP ENCODING
+  http:
+    encoding.charset: UTF-8
+    encoding.enable: true
+    encoding.force: true
+
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: arthur
+    password: sa
+    driverClassName: oracle.jdbc.driver.OracleDriver
+
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+
+  resources:
+    static-locations: classpath:/assets/
+
+mybatis:
+#  config-location: classpath:mybatis/mybatis.cfg.xml        # mybatis配置文件所在路径
+  type-aliases-package: com.arthur.dao         # 所有Entity别名类所在包
+  mapper-locations: classpath:mapper/**/*.xml       # mapper映射文件

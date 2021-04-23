@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/amazeui.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="js/jquery-3.1.1.js" language="javascript" type="text/javascript"></script>
+    <style>
+        .admin-main{
+            padding-top: 0px;
+        }
+    </style>
+</head>
+<body>
+<div class="am-cf admin-main">
+    <!-- content start -->
+    <div class="admin-content">
+        <div class="admin-content-body">
+            <div class="am-g">
+                <div class="am-form am-form-horizontal" method="post" style="padding-top:30px;" >
+                    <div class="am-form-group">
+                        <label  class="am-u-sm-3 am-form-label">预约时间 </label>
+                        <div class="am-u-sm-9">
+                            <input  type="text" id="appoint"  placeholder="请输入预约时间" name="password">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <input type="button" class="am-btn am-btn-success" value="预约" onclick="apponeinfo()"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/plugs.js"></script>
+<script>
+    function apponeinfo() {
+    var parkingid = localStorage["parkingid"];
+    var userid = localStorage["userid"];
+    var reservetime = $("#appoint").val();
+    if(userid==null){
+        alert("请登录！")
+        location.href=encodeURI("/index")
+    }else {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "appOneInfoController",
+            data:{
+                "parkingid":parkingid,
+                "userid":userid,
+                "reservetime":reservetime
+            },
+            success(data){
+                if(data==0){
+                    alert("预约失败，请咨询管理员")
+                }else if(data==1){
+                    alert("预约成功，请按时到达")
+                    location.href=encodeURI("/car-appointment")
+                }
+                window.close();
+            }
+        })
+    }
+
+}</script>
+</body>
+</html>

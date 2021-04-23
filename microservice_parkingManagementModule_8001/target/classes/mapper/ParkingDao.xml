@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.arthur.dao.ParkingDao">
+  <!-- 查找所有用户 -->
+  <select id="listAll" resultType="com.arthur.domain.Parking">
+    select * from "parking"
+  </select>
+
+  <!-- 添加用户 -->
+  <insert id="insert">
+   <!--mysql-->
+  <!--insert into users(account, password, name, info) values (#{account}, #{password}, #{name}, #{info})-->
+    insert into "parking" ("parkingid","location", "parkid", "state") values (SEQ_PARKING_PARKINGID.nextVal, #{location},#{parkid},#{state})</insert>
+  
+  <!-- 删除用户 -->
+  <delete id="deleteById">
+    delete from "parking" where "parkingid" = #{parkingid}
+  </delete>
+  
+  <!-- 更新用户 -->
+  <update id="update">
+    update "parking" set  "location"=#{location},"parkid"=#{parkid},"state" = #{state} where "parkingid" = #{parkingid}
+  </update>
+
+
+  <!-- 更新车位状态 -->
+  <update id="updateState">
+    update  "parking"  set "state"=#{state} where  "parkingid"=#{parkingid}
+  </update>
+
+  <!-- 更新车位状态 -->
+  <update id="updateStateOut">
+    update  "parking"  set "state"=#{state} where  "parkingid"=#{parkingid}
+  </update>
+
+  <!-- 更新车位状态 -->
+  <update id="updateOutTime">
+    update  "parkrecord"  set "outtime"=#{outtime} where  "parkingid"=#{parkingid}
+  </update>
+
+  
+
+
+  <select id="listAllAway" resultType="com.arthur.domain.Parking">
+    select "parking"."parkingid","parking"."location","parking"."parkid","parking"."state","carinformation"."carnumber" from "parking","parkrecord","carinformation" where "parkrecord"."parkingid"="parking"."parkingid" and "carinformation"."carid"="parkrecord"."carid" and "parkrecord"."outtime" is null
+  </select>
+
+</mapper>

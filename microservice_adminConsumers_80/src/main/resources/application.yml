@@ -1,0 +1,23 @@
+# 服务器配置部分
+server:
+  # 配置服务器端口号
+  port: 80
+
+
+spring:
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+
+  resources:
+    static-locations: classpath:/assets/
+
+  http:
+    encoding.charset: UTF-8
+    encoding.enable: true
+    encoding.force: true
+
+
+  thymeleaf:
+    mode: LEGACYHTML5

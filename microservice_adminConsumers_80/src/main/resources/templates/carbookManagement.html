@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/xadmin.js"></script>
+
+    <script src="js/layui-2.5.4/layui.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+
+    <![endif]-->
+  </head>
+  
+  <body>
+
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so"  lay-filter="advSearchFrom" id="advSearchFrom" onsubmit="return false">
+          <input class="layui-input" placeholder="开始日" id="start_time" name="start_time">
+          <input class="layui-input" placeholder="截止日" id="end_time" name="end_time">
+          <button class="layui-btn" id="layui-btn"  data-type="reload" lay-submit lay-filter="askforleaveSearch"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+      </div>
+
+      <table id="user-tbl" lay-filter="user-tbl" class="layui-table"></table>
+
+    <script>
+      layui.use(['jquery', 'table', 'layer', 'form'], function() {
+        // 加载layui模块，使用其推荐的【预先加载】方式，详见官网【模块规范】一节
+        var $ = layui.$;
+        var table = layui.table;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        // 显示所有用户
+        table.render({
+          elem: '#user-tbl',
+          url: 'carbookManagement/all',
+          method: 'get',
+          cols: [
+            [
+              {field: 'reserveid', title: 'id'},
+              {field: 'carnumber', title: '车牌号'},
+              {field: 'username', title: '用户名'},
+              {field: 'reservetime', title: '预约时间'}
+            ]
+          ],
+          // 表格容器id，用于表格重载
+          id: 'user-tbl',
+        });
+        $('#layui-btn').on('click', function(){
+          // var context=document.getElementById("search");
+          // var contextV=context.value;
+          var start_time = $('#start_time').val();
+          var end_time = $('#end_time').val();
+          // 搜索包含某个字符的内容
+          table.reload('user-tbl', {
+            url: 'carbookManagement/find'
+            ,methods:"post"
+            ,where: {
+              start_time :start_time,
+              end_time:end_time
+            }
+          });
+        });
+        layui.use('laydate', function(){
+          var laydate = layui.laydate;
+          var endDate= laydate.render({
+            elem: '#end_time',//选择器结束时间
+            type: 'datetime',
+            min:"1970-1-1",//设置min默认最小值
+            done: function(value,date){
+              startDate.config.max={
+                year:date.year,
+                month:date.month-1,//关键
+                date: date.date,
+                hours: 0,
+                minutes: 0,
+                seconds : 0
+              }
+            }
+          });
+
+          //日期范围
+          var startDate=laydate.render({
+            elem: '#start_time',
+            type: 'datetime',
+            max:"2099-12-31",//设置一个默认最大值
+            done: function(value, date){
+              endDate.config.min ={
+                year:date.year,
+                month:date.month-1, //关键
+                date: date.date,
+                hours: 0,
+                minutes: 0,
+                seconds : 0
+              };
+            }
+          });
+          form.on('submit(askforleaveSearch)', function(data) {
+            table.reload('#user-tbl', {
+              method: 'post'
+              , where: {
+                'token': token,
+                'start_time': start_time,
+                'end_time': end_time,
+              }
+              , page: {
+                curr: 1
+              }
+            });
+            // ajax方式更新用户
+            $.ajax({
+              url: "cardetailEnquiry/find",
+              type: "GET",
+              data: {"start_time":data.field.start_time,"end_time":data.field.end_time},
+              contentType: 'application/json',
+              dataType: 'json',
+            });
+
+            // 阻止表单跳转
+            return false;
+          });
+        });
+        table.on('tool(user-tbl)', function(obj) {
+          // 获取当前行数据和lay-event的值
+          var data = obj.data;
+          var event = obj.event;
+
+          // 删除用户事件
+          if (event === 'deleteUser') {
+            layer.confirm('确定删除该用户吗？', function (index) {
+              // ajax方式删除用户
+              $.ajax({
+                url: 'carbookManagement/' + data.reserveid,
+                type: "DELETE",
+                dataType: 'json',
+                success: function (data) {
+                  if (data.status == 1) {
+                    layer.msg('删除成功');
+                    table.reload('user-tbl');
+                  } else {
+                    layer.msg('删除失败');
+                  }
+                },
+                error: function () {
+                  console.log("ajax error");
+                }
+              });
+              layer.close(index);
+            });
+          }
+        });
+      });
+
+    </script>
+    <script>
+      layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+          elem: '#end' //指定元素
+        });
+      });
+
+       /*用户-停用*/
+      function member_stop(obj,id){
+          layer.confirm('确认要停用吗？',function(index){
+
+              if($(obj).attr('title')=='启用'){
+
+                //发异步把用户状态进行更改
+                $(obj).attr('title','停用')
+                $(obj).find('i').html('&#xe62f;');
+
+                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                layer.msg('已停用!',{icon: 5,time:1000});
+
+              }else{
+                $(obj).attr('title','启用')
+                $(obj).find('i').html('&#xe601;');
+
+                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                layer.msg('已启用!',{icon: 5,time:1000});
+              }
+              
+          });
+      }
+
+        /*用户-删除*/
+        function member_del(obj, id) {
+          layer.confirm('确认要删除吗？', function (index) {
+            //发异步删除数据
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!', {icon: 1, time: 1000});
+          });
+        }
+
+
+
+      function delAll (argument) {
+
+        var data = tableCheck.getData();
+  
+        layer.confirm('确认要删除吗？'+data,function(index){
+            //捉到所有被选中的，发异步进行删除
+            layer.msg('删除成功', {icon: 1});
+            $(".layui-form-checked").not('.header').parents('tr').remove();
+        });
+      }
+    </script>
+    <script>var _hmt = _hmt || []; (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();</script>
+  </body>
+
+</html>

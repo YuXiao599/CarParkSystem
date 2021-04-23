@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="microservice_dailyBusinessManagementModule_8301" />
+        <module name="microservice_adminConsumers_80" />
+        <module name="microservice_userForegroundInterface_8101" />
+        <module name="microservice_api" />
+        <module name="microservice_userConsumer_81" />
+        <module name="microservice_parkingManagementModule_8001" />
+        <module name="microservice_userManagementModule_8201" />
+        <module name="microservice_valueAddedServiceModule_8501" />
+        <module name="microservice_eureka_server_7001" />
+        <module name="microservice_dailyBusinessManagementModule1_8301" />
+        <module name="microservice_auxiliaryFunctionModule_8401" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="microservice_adminConsumer_80" target="1.8" />
+      <module name="microservice_dailyBusinessManagementModule_8301" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="microservice_dailyBusinessManagementModule1_8301" options="-parameters" />
+      <module name="microservice_dailyBusinessManagementModule_8301" options="" />
+      <module name="microservice_parkingManagementModule_8001" options="-parameters" />
+      <module name="microservice_userForegroundInterface_8101" options="" />
+      <module name="microservice_userManagementModule_8201" options="-parameters" />
+      <module name="microservice_valueAddedServiceModule_8501" options="-parameters" />
+    </option>
+  </component>
+</project>

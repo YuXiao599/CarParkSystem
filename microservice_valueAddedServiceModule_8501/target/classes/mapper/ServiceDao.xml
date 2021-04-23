@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.arthur.dao.ServiceDao">
+  <!-- 查找所有增值服务 -->
+  <select id="listAll" resultType="com.arthur.domain.Services">
+    select * from addedservice
+  </select>
+
+  <!-- 添加增值服务 -->
+  <insert id="insert">
+    insert into addedservice (serviceid,servicename, regulation, money,administratorid) values (SEQ_addedservice_ID.nextVal,#{servicename}, #{regulation},#{money},#{administratorid,jdbcType =NUMERIC})
+    </insert>
+  
+  <!-- 删除增值服务 -->
+  <delete id="deleteById">
+    delete from addedservice where serviceid = #{serviceid}
+  </delete>
+  
+  <!-- 更新增值服务 -->
+  <update id="update">
+    update addedservice set servicename = #{servicename}, regulation = #{regulation}, money = #{money} where serviceid = #{serviceid}
+  </update>
+  
+  <!-- 根据name查找增值服务 -->
+  <select id="findByName" parameterType="String" resultType="com.arthur.domain.Services">
+    select * from addedservice where servicename like '%' ||#{servicename} || '%'
+  </select>
+</mapper>

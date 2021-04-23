@@ -1,0 +1,31 @@
+server:
+  port: 8501
+  address: 127.0.0.1
+  session-timeout: 30
+  tomcat.max-threads: 0
+  tomcat.uri-encoding: UTF-8
+
+spring:
+  # HTTP ENCODING
+  http:
+    encoding.charset: UTF-8
+    encoding.enable: true
+    encoding.force: true
+
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521:XE
+    username: arthur
+    password: sa
+    driverClassName: oracle.jdbc.driver.OracleDriver
+
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+
+  resources:
+    static-locations:classpath:/assets/
+mybatis:
+#  config-location: classpath:mybatis/mybatis.cfg.xml        # mybatis配置文件所在路径
+  type-aliases-package: com.arthur.domain         # 所有Entity别名类所在包
+  mapper-locations: classpath:mapper/**/*.xml       # mapper映射文件
